@@ -145,3 +145,60 @@ function mergeSort(array) {
 
 let mergedArray = mergeSort([105, 79, 100, 110]);
 console.log(mergedArray);
+
+function betterMergeSort(array) {
+  // if the array only has one element, it is already sorted
+  if (array.length <= 1) {
+    return array;
+  }
+
+  // find the midpoint of the array
+  const mid = Math.floor(array.length / 2);
+
+  /* leftSubArray is assigned to the array resulting from a slice that starts at index 0 and goes up to,
+      but not including, index mid + 1 */
+  const leftSubArray = array.slice(0, mid);
+
+  /* rightSubArray is assigned to the array resulting from a slice that starts at index mid + 1 and goes up to,
+      but not including, index h + 1 */
+  const rightSubArray = array.slice(mid);
+
+  // recursive calls to sort the subarrays and return the sorted results
+  const sortedLeftSubArray = mergeSort(leftSubArray);
+  const sortedRightSubArray = mergeSort(rightSubArray);
+
+  // merge the sorted results
+  return merge(sortedLeftSubArray, sortedRightSubArray);
+}
+
+function merge(leftSubArray, rightSubArray) {
+  // initialize mergedArray to an empty array
+  let mergedArray = [];
+
+  // initialize the index for the leftSubArray, the rightSubArray, and the combined, sorted mergedArray
+  let i = 0;
+  let j = 0;
+
+  // as long as either the leftSubArray oe the rightSubArray have an element
+  while (i < leftSubArray.length && j <= rightSubArray.length) {
+    // compare the first remaining element of the leftSubArray to the first remaining element of the rightSubArray
+    if (leftSubArray[i] < rightSubArray[j]) {
+      // if the former is less, copy that element of the leftSubArray to mergedArray, and increment their indices
+      mergedArray.push(leftSubArray[i]);
+      i++;
+    } else {
+      /* otherwise, the latter is less, so
+            copy that element of the rightSubArray to mergedArray, and increment their indices */
+      mergedArray.push(rightSubArray[j]);
+      j++;
+    }
+  }
+
+  // concatenate any remaining elements from both subarrays
+  return mergedArray
+    .concat(leftSubArray.slice(i))
+    .concat(rightSubArray.slice(j));
+}
+
+let betterMergedArray = betterMergeSort([105, 79, 100, 110]);
+console.log(betterMergedArray);
